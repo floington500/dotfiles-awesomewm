@@ -7,7 +7,7 @@ local gears = require("gears") -- keybinds
 local awful = require("awful") -- window manager
 require("awful.autofocus")
 -- Widget and layout library
-local wibox = require("wibox") -- wibar
+local wibox = require("wibox") -- bar above screen
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -59,7 +59,8 @@ margin:set_margins(5, 0, 0, 0)
 
 -- {{{ My widgets
 local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 local volume_widget = require('awesome-wm-widgets.pactl-widget.volume')    
 -- }}}
@@ -91,26 +92,15 @@ awful.layout.layouts = {
 }
 -- }}}
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-
-mymainmenu = awful.menu({ items = {  { "open terminal", terminal }
-                                  }
-                        })
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
+
+-- Set location for menubar
+menubar.geometry = { height = 35, x = 0, y = screen[1].geometry.height - 35 }
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -275,7 +265,6 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -322,9 +311,6 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
-
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
@@ -635,3 +621,4 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 awful.spawn("start-pulseaudio-x11") -- activate audio
+

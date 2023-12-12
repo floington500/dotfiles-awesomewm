@@ -40,7 +40,7 @@ theme.border_normal = "#000000"
 theme.border_focus  = "#511abd"
 theme.border_marked = "#91231c"
 
--- {{ wibar
+-- {{{ wibar
 theme.wibar_opacity = 0.9
 
 -- {{{ taglist
@@ -56,6 +56,18 @@ theme.tasklist_fg_minimize = gray_blue
 theme.tasklist_bg_minimize = dark_blue
 -- }}}
 --
+-- }}}
+
+-- {{{ menubar
+theme.menubar_fg_normal = gray_blue
+theme.menubar_bg_normal = dark_blue
+theme.menubar_fg_focus = white
+theme.menubar_bg_focus = bright_blue
+-- }}}
+
+-- {{{ run prompt
+theme.prompt_bg = dark_blue
+theme.prompt_fg = white
 -- }}}
 
 -- There are other variable sets
