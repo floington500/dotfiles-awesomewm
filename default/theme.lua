@@ -33,7 +33,7 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = 13 -- spacing of windows when they are tiled
+theme.useless_gap   = 0 -- spacing of windows when they are tiled
 theme.gap_single_client = true -- gaps when only one client is in the frame
 theme.border_width  = dpi(3) -- border around windows
 theme.border_normal = "#000000"

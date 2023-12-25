@@ -84,7 +84,6 @@ mykey  = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.floating,
-    	awful.layout.suit.fair,
     	awful.layout.suit.tile,
     	awful.layout.suit.tile.left,
     	awful.layout.suit.tile.bottom,
@@ -166,7 +165,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- {{{ Tag configuration
 	local names = {"main", "www", "office"}
 	local l = awful.layout.suit
-	local layouts = { l.fair, l.fair, l.floating }
+	local layouts = { l.floating, l.floating, l.floating }
 	awful.tag(names, s, layouts)
     -- }}}
 
@@ -197,7 +196,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ 
 	screen = s, 
-	ontop = true,
 	position = "top",
 	fg = "#d7dbfc",
 	bg = "#0d1b1f",
@@ -331,12 +329,12 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+    awful.key({ modkey,           }, "q", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
+    --awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+    --          {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
