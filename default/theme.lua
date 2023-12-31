@@ -37,7 +37,7 @@ theme.useless_gap   = 0 -- spacing of windows when they are tiled
 theme.gap_single_client = true -- gaps when only one client is in the frame
 theme.border_width  = dpi(3) -- border around windows
 theme.border_normal = "#000000"
-theme.border_focus  = "#511abd"
+theme.border_focus  = "#3D43C2"
 theme.border_marked = "#91231c"
 
 -- {{{ wibar
