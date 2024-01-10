@@ -269,11 +269,13 @@ root.buttons(gears.table.join(
 -- }}}
 
 -- {{{ Key bindings
+-- These are categorized so that my personal applications are mapped to ``mykey`` and system related applications are mapped to ``modkey``.
 globalkeys = gears.table.join(
     -- {{{ My keybinds 
     	-- app launching
     awful.key({ mykey }, "f", function () awful.spawn("firefox") end),
     awful.key({ mykey }, "o", function () awful.spawn("obsidian") end),
+    awful.key({ modkey }, "d", function () awful.spawn("dolphin") end),
 
     	-- laptop keyboard
     awful.key({}, "XF86AudioRaiseVolume", function () volume_widget:inc(5) end),
