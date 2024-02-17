@@ -70,7 +70,7 @@ beautiful.init(config_dir.."default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
-editor = "nvim" 
+editor = "vim" 
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -221,7 +221,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 	    wibox.widget.textbox(seperator_text),
 	    brightness_widget({
-		program = "light",
+		program = "brightnessctl",
 		step = 5,
 		base = 70,
 		tooltip = true,
