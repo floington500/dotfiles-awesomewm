@@ -1,17 +1,17 @@
 # Desktop Enviornment
 
-My desktop enviornment is a masterpiece that should be compared to the likes of the greatest artists that have marveled history.
+My desktop enviornment is awesome.
 
 ## Architecture
 
-The underlying system relies on a few magnificantly implemented subsystems in order to run seamlessly:
+The underlying system is implemented with the following programs:
 
-1. **Display Manger**: LightDM
+1. **Display Manger**: cdm
 1. **Windowing System**: X11
 3. **Window Manager**: AwesomeWM
 4. **Compositor**: picom
 
-The configuration for these can be found under my other repository for configurations.
+Configurations can be modified and used however one sees fit.
 
 ## Preview
 
