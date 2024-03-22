@@ -47,6 +47,7 @@ end
 -- Define the configuration directory
 config_dir = awful.util.get_configuration_dir()
 seperator_text = " | "
+local user = os.getenv("LOGNAME")
 
 -- Rounded edges on wibar
 local wibar_shape = function(cr, width, height)
@@ -62,7 +63,12 @@ local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
-local volume_widget = require('awesome-wm-widgets.pactl-widget.volume')    
+local session_widget = wibox.widget {
+	text=user,
+	align='center',
+	valign='center',
+	widget=wibox.widget.textbox
+}
 -- }}}
 
 -- Themes define colours, icons, font and wallpapers.
@@ -211,7 +217,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
 		margin,
 		layout = wibox.layout.fixed.horizontal,
-	    	logout_menu_widget(), --mylauncher,	
+	    	logout_menu_widget({
+			path_to_icons=config_dir.."icons/",
+		}),
             	s.mytaglist,
             	s.mypromptbox,
         },
@@ -230,16 +238,12 @@ awful.screen.connect_for_each_screen(function(s)
 	    }),
 
 	    wibox.widget.textbox(seperator_text),
-	    volume_widget({
-	   	tooltip = true 
-	    }),
-
-	    wibox.widget.textbox(seperator_text),
 	    battery_widget({
-		show_current_level = true,
+		path_to_icons=config_dir.."icons/",
 		display_notification = true,
 		enable_battery_warning = false
 	    }),
+
 
 	    wibox.widget.textbox(seperator_text),
 	    cpu_widget({
@@ -249,6 +253,9 @@ awful.screen.connect_for_each_screen(function(s)
 	    }),
 
             wibox.widget.systray(),
+
+	    wibox.widget.textbox(seperator_text),
+	    session_widget,
 
 	    wibox.widget.textbox(seperator_text),
             mytextclock,
@@ -272,45 +279,44 @@ root.buttons(gears.table.join(
 -- These are categorized so that my personal applications are mapped to ``mykey`` and system related applications are mapped to ``modkey``.
 globalkeys = gears.table.join(
     -- {{{ My keybinds 
-    	-- app launching
-    awful.key({ mykey }, "f", function () awful.spawn("firefox") end),
-    awful.key({ mykey }, "o", function () awful.spawn("obsidian") end),
-    awful.key({ modkey }, "d", function () awful.spawn("dolphin") end),
+    	-- App Launching
+    	awful.key({ mykey }, "f", function () awful.spawn("firefox") end),
 
-    	-- laptop keyboard
-    awful.key({}, "XF86AudioRaiseVolume", function () volume_widget:inc(5) end),
-    awful.key({}, "XF86AudioLowerVolume", function () volume_widget:dec(5) end),
-    awful.key({}, "F8", function () volume_widget:toggle() end), 
-    awful.key({}, "XF86MonBrightnessUp", function () brightness_widget:inc() end,
-    	{description = "increase brightness", group = "custom"}),
-    awful.key({}, "XF86MonBrightnessDown", function () brightness_widget:dec() end, 
-    	{description = "decrease brightness", group = "custom"}), 
+	-- Audio Controls
+	awful.key({}, "XF86AudioLowerVolume", function ()
+		awful.util.spawn("amixer set Master 5%-", false) end),
+	awful.key({}, "XF86AudioRaiseVolume", function ()
+		awful.util.spawn("amixer set Master 5%+", false) end),
+	awful.key({}, "XF86AudioMute", function ()
+		awful.util.spawn("amixer set Master 1+ toggle", false) end),
 
-	-- screenshot
-    awful.key({}, "Print"	 , function () awful.spawn("spectacle") end), 
-    -- }}}
-	
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
-              {description = "view previous", group = "tag"}),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
-              {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
+	-- Backlight controls
+    	awful.key({}, "XF86MonBrightnessUp", function () brightness_widget:inc() end,
+    		{description = "increase brightness", group = "custom"}),
+    	awful.key({}, "XF86MonBrightnessDown", function () brightness_widget:dec() end, 
+    		{description = "decrease brightness", group = "custom"}), 
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
+	-- Screenshot
+	--awful.key({}, "Print"	 , function () awful.spawn("spectacle") end), 
+   --}}}
+    	awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+             	{description="show help", group="awesome"}),
+    	awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
+              	{description = "view previous", group = "tag"}),
+    	awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
+              	{description = "view next", group = "tag"}),
+    	awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+              	{description = "go back", group = "tag"}),
+
+    	awful.key({ modkey,           }, "j",
+        	function() awful.client.focus.byidx( 1) end,
+        	{description = "focus next by index", group = "client"}
+    	),
+    	awful.key({ modkey,           }, "k",
+        	function() awful.client.focus.byidx(-1) end,
+        	{description = "focus previous by index", group = "client"}
+    	),
+ 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
@@ -335,8 +341,8 @@ globalkeys = gears.table.join(
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    --awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-    --          {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+              {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -620,5 +626,3 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-awful.spawn("start-pulseaudio-x11") -- activate audio
-
